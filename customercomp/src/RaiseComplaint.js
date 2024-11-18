@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Box,Typography,Button } from '@mui/material';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const RaiseComplaint = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +13,7 @@ const RaiseComplaint = () => {
 
   const [errors, setErrors] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-
+  const navigate = useNavigate();
   const validateForm = () => {
     const newErrors = {};
 
@@ -54,10 +56,44 @@ const RaiseComplaint = () => {
       console.error("Error submitting complaint:", error);
     }
   };
-  
+  const handleLogout = () => {
+    navigate("/logout"); // Navigate to the logout route
+  };
+  const ChangePage = () => {
+    navigate("/status"); // Navigate to the logout route
+  };
 
   return (
+    <Box p={3} height="80vh">
+    <Typography variant="h4" gutterBottom>
+      CUSTOMER DASHBOARD
+    </Typography>
     <div style={styles.container}>
+    <Button
+        variant="outlined"
+        color="primary"
+        onClick={ChangePage}
+        sx={{
+          position: "absolute",
+          top: 20,
+          right: 150,
+        }}
+      >
+        VIEW COMPLAINTS
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleLogout}
+        sx={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+        }}
+      >
+        LOGOUT
+      </Button>
+      
       <form onSubmit={handleSubmit} style={styles.form}>
         <h2 style={styles.title}>Raise Complaint</h2>
         <div style={styles.formGroup}>
@@ -123,6 +159,7 @@ const RaiseComplaint = () => {
         </div>
       )}
     </div>
+    </Box>
   );
 };
 
@@ -140,6 +177,7 @@ const styles = {
     borderRadius: '8px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     width: '500px',
+    marginTop: '-80px'
   },
   title: {
     textAlign: 'center',

@@ -6,6 +6,7 @@ import AdminLogin from "./AdminLogin";
 import UserLogin from "./UserLogin";
 import AdminDashboard from "./AdminDashboard";
 import RaiseComplaint from "./RaiseComplaint";
+import ComplaintStatus from "./ComplaintStatus";
 import Logout from "./Logout";
 import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
@@ -21,6 +22,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/user" element={<UserLogin />} />
         <Route path="/complaint" element={<RaiseComplaint />} />
+        <Route path="/status" element={<ComplaintStatus />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/register" element={<UserRegistration />} />

@@ -1,26 +1,27 @@
-import { Box, Container, Grid, TextField, Button, Typography } from "@mui/material";
+import { Link, Box, Container, Grid, TextField, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function ResetPassword() {
     const navigate = useNavigate();
 
-    // State for new password, confirm password, and errors
+    const [email, setEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [errors, setErrors] = useState({ newPassword: "", confirmPassword: "" });
-    const [message, setMessage] = useState(""); // Feedback message
+    const [errors, setErrors] = useState({ email: "", newPassword: "", confirmPassword: "" });
+    const [message, setMessage] = useState("");
 
-    const handleReset = (event) => {
+    const handleReset = async (event) => {
         event.preventDefault();
-
-        // Clear message
         setMessage("");
-
-        // Validation logic
-        let validationErrors = { newPassword: "", confirmPassword: "" };
+        let validationErrors = { email: "", newPassword: "", confirmPassword: "" };
         let isValid = true;
 
+        if (!email) {
+            validationErrors.email = "Email is required";
+            isValid = false;
+        }
         if (!newPassword) {
             validationErrors.newPassword = "New password is required";
             isValid = false;
@@ -28,7 +29,6 @@ function ResetPassword() {
             validationErrors.newPassword = "Password must be at least 8 characters long";
             isValid = false;
         }
-
         if (!confirmPassword) {
             validationErrors.confirmPassword = "Confirm password is required";
             isValid = false;
@@ -39,15 +39,24 @@ function ResetPassword() {
 
         setErrors(validationErrors);
 
-        // If valid, show success message and navigate (mock behavior)
         if (isValid) {
-            setMessage("Password reset successfully!");
-            setTimeout(() => navigate("/user"), 2000); // Redirect to login after 2 seconds
+            try {
+                const response = await axios.post("http://localhost:5000/reset-password", {
+                    email,
+                    password: newPassword,
+                });
+                setMessage(response.data.message);
+                if (response.data.success) {
+                    setTimeout(() => navigate("/user"), 2000);
+                }
+            } catch (error) {
+                setMessage(error.response?.data?.message || "An error occurred");
+            }
         }
     };
 
     return (
-        <Container maxWidth="xs" style={{ backgroundColor: 'lightblue', height: '85 vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Container maxWidth="xs" style={{ height: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Box
                 sx={{
                     width: '100%',
@@ -63,11 +72,20 @@ function ResetPassword() {
                 <Typography variant="h4" gutterBottom>
                     <b>Reset Password</b>
                 </Typography>
-                <Typography variant="body2" color="textSecondary" sx={{ mb: 2, textAlign: 'center' }}>
-                    Enter your new password below.
-                </Typography>
                 <Box component="form" onSubmit={handleReset} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                label="Email"
+                                type="email"
+                                fullWidth
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                error={!!errors.email}
+                                helperText={errors.email}
+                            />
+                        </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -100,16 +118,21 @@ function ResetPassword() {
                     </Grid>
                 </Box>
 
-                {/* Feedback message */}
                 {message && (
                     <Typography
                         variant="body2"
-                        color="green"
+                        color={message.includes("success") ? "green" : "red"}
                         sx={{ mt: 2 }}
                     >
                         {message}
                     </Typography>
                 )}
+
+                <Box sx={{ mt: 2, textAlign: 'center' }}>
+                    <Link href="/user" underline="hover" sx={{ display: 'block', mt: 1 }}>
+                        Login
+                    </Link>
+                </Box>
             </Box>
         </Container>
     );

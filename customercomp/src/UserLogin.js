@@ -1,28 +1,38 @@
 import { Box, Container, Grid, TextField, Button, Link, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function UserLogin() {
-    const navigate = useNavigate();
 
-    // State variables for username, password, and error messages
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({ username: "", password: "" });
-    const [loginMessage, setLoginMessage] = useState(""); // Message for login feedback
+    const navigate = useNavigate();
+    const [name, setName] = useState()
+    const [password, setPassword] = useState()
+
+    const [errors, setErrors] = useState({ name: "", password: "" });
 
     const handleLogin = (event) => {
         event.preventDefault();
-
-        // Reset message on each attempt
-        setLoginMessage("");
-
+        axios.post('http://localhost:5000/login', { name, password })
+        .then(result => {
+            if (result.data === "Success") {
+                alert("Login successful!");
+                navigate('/complaint');
+            } else {
+                alert("Invalid credentials, please try again.");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("An error occurred while logging in. Please try again later.");
+        });
+        
         // Simple validation logic
-        let validationErrors = { username: "", password: "" };
+        let validationErrors = { name: "", password: "" };
         let isValid = true;
 
-        if (!username) {
-            validationErrors.username = "Username is required";
+        if (!name) {
+            validationErrors.name = "Username is required";
             isValid = false;
         }
         if (!password) {
@@ -31,20 +41,10 @@ function UserLogin() {
         }
 
         setErrors(validationErrors);
-
-        // Mock validation (Replace with actual API call in a real app)
-        if (isValid) {
-            if (username === "user1" && password === "password123") {
-                setLoginMessage("Login successful!");
-                navigate("/complaint"); // Redirect to student dashboard
-            } else {
-                setLoginMessage("Invalid username or password");
-            }
-        }
     };
 
     return (
-        <Container maxWidth="xs" style={{ backgroundColor: 'lightblue', height: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Container maxWidth="xs" style={{ height: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Box
                 sx={{
                     width: '100%',
@@ -67,10 +67,10 @@ function UserLogin() {
                                 variant="outlined"
                                 label="Username"
                                 fullWidth
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                error={!!errors.username}
-                                helperText={errors.username}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                error={!!errors.name}
+                                helperText={errors.name}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -93,7 +93,7 @@ function UserLogin() {
                     </Grid>
                 </Box>
 
-                {/* Display login message */}
+                {/* Display login message 
                 {loginMessage && (
                     <Typography
                         variant="body2"
@@ -106,9 +106,6 @@ function UserLogin() {
 
                 {/* Links for navigation */}
                 <Box sx={{ mt: 2, textAlign: 'center' }}>
-                    <Link href="/forgotpassword" underline="hover" sx={{ display: 'block', mt: 1 }}>
-                        Forgot Password?
-                    </Link>
                     <Link href="/resetpassword" underline="hover" sx={{ display: 'block', mt: 1 }}>
                         Reset the Password?
                     </Link>

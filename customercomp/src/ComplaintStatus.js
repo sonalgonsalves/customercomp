@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./ComplaintStatus.css"; // Import CSS file for styling
+import { Box,Typography,Button } from '@mui/material';
+import "./ComplaintStatus.css"; // Import CSS file for styling]
+import { useNavigate } from "react-router-dom";
 
 const ComplaintStatus = () => {
   const [complaints, setComplaints] = useState([]);
@@ -8,6 +10,7 @@ const ComplaintStatus = () => {
     status: "",
     sortBy: "date", // Default sort by date
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch complaints from backend
@@ -41,8 +44,43 @@ const ComplaintStatus = () => {
       return a.status.localeCompare(b.status);
     }
   });
+  const handleLogout = () => {
+    navigate("/logout"); // Navigate to the logout route
+  };
+  const ChangePage = () => {
+    navigate("/complaint"); 
+  };
 
   return (
+    <Box p={3} height="80vh">
+    <Typography variant="h4" gutterBottom>
+      CUSTOMER DASHBOARD
+    </Typography>
+    <div>
+    <Button
+        variant="outlined"
+        color="primary"
+        onClick={ChangePage}
+        sx={{
+          position: "absolute",
+          top: 20,
+          right: 150,
+        }}
+      >
+        RAISE COMPLAINT
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleLogout}
+        sx={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+        }}
+      >
+        LOGOUT
+      </Button>
     <div className="complaint-status-container">
       <h2>Complaint Status</h2>
       <div className="filters">
@@ -81,7 +119,10 @@ const ComplaintStatus = () => {
         </tbody>
       </table>
     </div>
+    </div>
+    </Box>
   );
+
 };
 
 export default ComplaintStatus;
