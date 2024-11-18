@@ -2,7 +2,7 @@ import { Box, Container, Grid, TextField, Button, Link, Typography } from "@mui/
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Userlogin() {
+function UserLogin() {
     const navigate = useNavigate();
 
     // State variables for username, password, and error messages
@@ -122,4 +122,4 @@ function Userlogin() {
     );
 }
 
-export default Userlogin;
+export default UserLogin;
