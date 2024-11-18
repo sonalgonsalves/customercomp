@@ -1,12 +1,18 @@
-// import ComplaintStatus from "./ComplaintStatus";
-import RaiseComplaint from "./RaiseComplaint";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AdminLogin from "./AdminLogin";
+import AdminDashboard from "./AdminDashboard";
+import Logout from "./Logout";
 
 function App() {
   return (
-    <>
-      <RaiseComplaint /> 
-        {/* <ComplaintStatus/> */}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<AdminLogin />} />
+        <Route path="/dashboard" element={<AdminDashboard />} />
+        <Route path="/logout" element={<Logout />} />
+      </Routes>
+    </Router>
   );
 }
 
