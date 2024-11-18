@@ -21,10 +21,12 @@ import {
 
 function AdminDashboard() {
   const navigate = useNavigate();
+
   const [complaints, setComplaints] = useState([]);
   const [selectedComplaint, setSelectedComplaint] = useState(""); // Complaint filter state
   const [selectedStatus, setSelectedStatus] = useState(""); // Status filter state
 
+  // Fetch complaints from the backend on component mount
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
@@ -45,32 +47,23 @@ function AdminDashboard() {
   const handleStatusFilterChange = (event) => {
     setSelectedStatus(event.target.value); // Update status filter state
   };
-    
+
   const handleStatusChange = async (id, newStatus) => {
-    console.log(`Changing status for complaint with ID: ${id} to ${newStatus}`);
-    
     try {
-      const response = await axios.post("http://localhost:5000/api/complaints/updateStatus", {
-        id, 
-        status: newStatus,
-      });
-  
-      // Log the updated complaint to confirm the response
-      console.log(response.data);
-  
-      // Update the frontend with the new status
+      const response = await axios.post("http://localhost:5000/api/complaints/updateStatus", { id, status: newStatus });
+      const updatedComplaint = response.data;
+
+      // Update the complaints list in the UI with the new status
       setComplaints((prevComplaints) =>
         prevComplaints.map((complaint) =>
-          complaint._id === response.data._id 
-            ? { ...complaint, status: response.data.status } 
-            : complaint
+          complaint._id === updatedComplaint._id ? { ...complaint, status: updatedComplaint.status } : complaint
         )
       );
     } catch (error) {
       console.error("Error updating status:", error);
     }
   };
-  
+
   // Filter complaints based on selected complaint and status
   const filteredComplaints = complaints.filter((complaint) => {
     return (
@@ -80,7 +73,7 @@ function AdminDashboard() {
   });
 
   const handleLogout = () => {
-    navigate("/logout"); // Navigate to the logout route
+    navigate("/logout"); // Corrected: navigate to the logout route
   };
 
   return (
@@ -184,7 +177,7 @@ function AdminDashboard() {
                       <FormControl fullWidth>
                         <InputLabel>Status</InputLabel>
                         <Select
-                          value={complaint.status} // Ensure the value is properly bound
+                          value={complaint.status}
                           onChange={(e) => handleStatusChange(complaint._id, e.target.value)}
                           label="Status"
                         >

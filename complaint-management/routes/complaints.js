@@ -24,27 +24,27 @@ router.get("/", async (req, res) => {
 });
 
 // POST: Update the status of a complaint
-// Update complaint status
 router.post("/updateStatus", async (req, res) => {
-  const { id, status } = req.body; // Extract the id and new status from the request body
+  const { id, status } = req.body;  // Destructure id and status from the request body
 
   try {
-    // Find the complaint by ID and update its status
-    const updatedComplaint = await Complaint.findByIdAndUpdate(
-      id,
-      { status }, // Update the status field
-      { new: true } // Return the updated document
-    );
+    // Find the complaint by id
+    const complaint = await Complaint.findById(id);
 
-    if (!updatedComplaint) {
-      return res.status(404).send("Complaint not found");
+    if (!complaint) {
+      return res.status(404).json({ message: "Complaint not found" });
     }
 
-    // Return the updated complaint as a response
-    res.json(updatedComplaint);
+    // Update the complaint's status
+    complaint.status = status;
+    complaint.changes = `Status updated to ${status}`;  // Optionally add changes tracking
+
+    // Save the updated complaint
+    const updatedComplaint = await complaint.save();
+
+    res.status(200).json(updatedComplaint);
   } catch (error) {
-    console.error("Error updating status:", error);
-    res.status(500).send("Server error");
+    res.status(500).json({ error: error.message });
   }
 });
 
