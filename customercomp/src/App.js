@@ -1,11 +1,11 @@
-import ComplaintStatus from "./ComplaintStatus";
+// import ComplaintStatus from "./ComplaintStatus";
 import RaiseComplaint from "./RaiseComplaint";
 
 function App() {
   return (
     <>
-      {/* <RaiseComplaint /> */}
-        <ComplaintStatus/>
+      <RaiseComplaint /> 
+        {/* <ComplaintStatus/> */}
     </>
   );
 }
