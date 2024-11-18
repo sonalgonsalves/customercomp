@@ -12,7 +12,7 @@ const ComplaintStatus = () => {
   useEffect(() => {
     // Fetch complaints from backend
     axios
-      .get("http://localhost:5000/api/complaints")
+      .get("http://localhost:5000/api/complaints") // Replace with your actual endpoint
       .then((response) => {
         setComplaints(response.data);
       })
