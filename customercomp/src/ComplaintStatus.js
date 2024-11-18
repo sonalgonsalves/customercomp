@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./ComplaintStatus.css"; // Import CSS file for styling
 
 const ComplaintStatus = () => {
-  const [complaints, setComplaints] = useState([
-    { id: 1, name: "John Doe", complaintType: "Technical", description: "Issue with internet", status: "Pending", date: "2024-09-10" },
-    { id: 2, name: "Jane Smith", complaintType: "Billing", description: "Incorrect charge on bill", status: "Resolved", date: "2024-11-09" },
-    { id: 3, name: "Joh De", complaintType: "Technical", description: "Issue with internet", status: "Pending", date: "2024-11-10" },
-    // Add more complaint data as needed
-  ]);
-
+  const [complaints, setComplaints] = useState([]);
   const [filters, setFilters] = useState({
     status: "",
     sortBy: "date", // Default sort by date
   });
+
+  useEffect(() => {
+    // Fetch complaints from backend
+    axios
+      .get("http://localhost:5000/api/complaints") // Replace with your actual endpoint
+      .then((response) => {
+        setComplaints(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching complaints:", error);
+      });
+  }, []);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -21,12 +29,11 @@ const ComplaintStatus = () => {
     }));
   };
 
-  // Filter complaints based on the status
+  // Filter and sort logic...
   const filteredComplaints = complaints.filter(
     (complaint) => !filters.status || complaint.status === filters.status
   );
 
-  // Sort complaints by date or status
   const sortedComplaints = filteredComplaints.sort((a, b) => {
     if (filters.sortBy === "date") {
       return new Date(b.date) - new Date(a.date);
@@ -36,87 +43,45 @@ const ComplaintStatus = () => {
   });
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>Complaint Status</h2>
-
-      <div style={styles.filterContainer}>
+    <div className="complaint-status-container">
+      <h2>Complaint Status</h2>
+      <div className="filters">
         <label>Filter by Status:</label>
         <select name="status" onChange={handleFilterChange} value={filters.status}>
           <option value="">All</option>
           <option value="Pending">Pending</option>
           <option value="Resolved">Resolved</option>
         </select>
-      </div>
-
-      <div style={styles.filterContainer}>
         <label>Sort by:</label>
         <select name="sortBy" onChange={handleFilterChange} value={filters.sortBy}>
           <option value="date">Date</option>
           <option value="status">Status</option>
         </select>
       </div>
-
-      <table style={styles.table}>
+      <table className="complaint-table">
         <thead>
           <tr>
-            <th style={styles.tableHeader}>Name</th>
-            <th style={styles.tableHeader}>Complaint Type</th>
-            <th style={styles.tableHeader}>Description</th>
-            <th style={styles.tableHeader}>Status</th>
-            <th style={styles.tableHeader}>Date</th>
+            <th>Name</th>
+            <th>Complaint Type</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
           {sortedComplaints.map((complaint) => (
-            <tr key={complaint.id} style={styles.tableRow}>
-              <td style={styles.tableCell}>{complaint.name}</td>
-              <td style={styles.tableCell}>{complaint.complaintType}</td>
-              <td style={styles.tableCell}>{complaint.description}</td>
-              <td style={styles.tableCell}>{complaint.status}</td>
-              <td style={styles.tableCell}>{complaint.date}</td>
+            <tr key={complaint._id}>
+              <td>{complaint.name}</td>
+              <td>{complaint.complaintType}</td>
+              <td>{complaint.description}</td>
+              <td>{complaint.status}</td>
+              <td>{new Date(complaint.date).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
-};
-
-// Inline styles for better presentation
-const styles = {
-  container: {
-    width: "80%",
-    margin: "0 auto",
-    padding: "20px",
-    fontFamily: "'Arial', sans-serif",
-    textAlign: "center",
-  },
-  title: {
-    marginBottom: "20px",
-    fontSize: "2rem",
-  },
-  filterContainer: {
-    marginBottom: "10px",
-    display: "inline-block",
-    marginRight: "15px",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    marginTop: "20px",
-  },
-  tableHeader: {
-    padding: "10px",
-    backgroundColor: "#f4f4f4",
-    border: "1px solid #ddd",
-  },
-  tableCell: {
-    padding: "10px",
-    border: "1px solid #ddd",
-  },
-  tableRow: {
-    backgroundColor: "#f9f9f9",
-  },
 };
 
 export default ComplaintStatus;

@@ -1,0 +1,61 @@
+/* Centering the container */
+.complaint-status-container {
+  max-width: 80%;
+  margin: 20px auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Styling filters */
+.filters {
+  margin-bottom: 20px;
+}
+
+.filters label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.filters select {
+  margin-right: 20px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Table styling */
+.complaint-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.complaint-table th,
+.complaint-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.complaint-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.complaint-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.complaint-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.complaint-table td {
+  word-break: break-word;
+}

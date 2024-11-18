@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from "axios";
 
 const RaiseComplaint = () => {
   const [formData, setFormData] = useState({
@@ -36,19 +37,24 @@ const RaiseComplaint = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
-    // Log the form data to the console
-    console.log('Complaint Submitted:', formData);
-
-    // Open the modal
-    setIsModalOpen(true);
-
-    // Reset form fields
-    setFormData({ name: '', email: '', complaintType: '', description: '' });
+  
+    try {
+      const response = await axios.post("http://localhost:5000/api/complaints", formData);
+      console.log("Complaint Submitted:", response.data);
+  
+      // Open the modal
+      setIsModalOpen(true);
+  
+      // Reset form fields
+      setFormData({ name: '', email: '', complaintType: '', description: '' });
+    } catch (error) {
+      console.error("Error submitting complaint:", error);
+    }
   };
+  
 
   return (
     <div style={styles.container}>
