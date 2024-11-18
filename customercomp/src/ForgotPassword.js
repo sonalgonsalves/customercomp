@@ -22,7 +22,7 @@ function ForgotPassword() {
             setError("Invalid email format");
         } else {
             console.log("Password reset link sent to:", email);
-            navigate("/login"); // Redirect to login after successful submission
+            navigate("/user"); // Redirect to login after successful submission
         }
     };
 

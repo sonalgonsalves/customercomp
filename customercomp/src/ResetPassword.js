@@ -42,7 +42,7 @@ function ResetPassword() {
         // If valid, show success message and navigate (mock behavior)
         if (isValid) {
             setMessage("Password reset successfully!");
-            setTimeout(() => navigate("/login"), 2000); // Redirect to login after 2 seconds
+            setTimeout(() => navigate("/user"), 2000); // Redirect to login after 2 seconds
         }
     };
 

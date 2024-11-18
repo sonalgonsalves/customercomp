@@ -62,7 +62,7 @@ function UserRegistration() {
         // If valid, navigate to login
         if (isValid) {
             console.log("Registration successful", formData);
-            navigate("/login");
+            navigate("/user");
         }
     };
 

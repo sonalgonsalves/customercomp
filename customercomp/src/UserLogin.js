@@ -36,7 +36,7 @@ function UserLogin() {
         if (isValid) {
             if (username === "user1" && password === "password123") {
                 setLoginMessage("Login successful!");
-                navigate("/student"); // Redirect to student dashboard
+                navigate("/complaint"); // Redirect to student dashboard
             } else {
                 setLoginMessage("Invalid username or password");
             }
@@ -106,10 +106,10 @@ function UserLogin() {
 
                 {/* Links for navigation */}
                 <Box sx={{ mt: 2, textAlign: 'center' }}>
-                    <Link href="/forgot-password" underline="hover" sx={{ display: 'block', mt: 1 }}>
+                    <Link href="/forgotpassword" underline="hover" sx={{ display: 'block', mt: 1 }}>
                         Forgot Password?
                     </Link>
-                    <Link href="/reset-password" underline="hover" sx={{ display: 'block', mt: 1 }}>
+                    <Link href="/resetpassword" underline="hover" sx={{ display: 'block', mt: 1 }}>
                         Reset the Password?
                     </Link>
                     <Link href="/register" underline="hover" sx={{ display: 'block', mt: 1 }}>
