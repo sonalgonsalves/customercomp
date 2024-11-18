@@ -19,7 +19,7 @@ function Logout() {
       justifyContent="center"
       height="100vh"
     >
-      <Typography variant="h4">YOU HAVE BEEN LOGGED OUT !!!!</Typography>
+      <Typography variant="h4">LOGGING OUT!</Typography>
     </Box>
   );
 }

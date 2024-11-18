@@ -110,10 +110,10 @@ function UserLogin() {
                         Forgot Password?
                     </Link>
                     <Link href="/reset-password" underline="hover" sx={{ display: 'block', mt: 1 }}>
-                       Reset the Password?
+                        Reset the Password?
                     </Link>
                     <Link href="/register" underline="hover" sx={{ display: 'block', mt: 1 }}>
-                      Register
+                        Register
                     </Link>
                     
                 </Box>
@@ -122,8 +122,4 @@ function UserLogin() {
     );
 }
 
-<<<<<<< HEAD:customercomp/src/Userlogin.js
 export default UserLogin;
-=======
-export default UserLogin;
->>>>>>> 758f162a1b0aea505265e4898f2f5ae5d5819aa7:customercomp/src/UserLogin.js
