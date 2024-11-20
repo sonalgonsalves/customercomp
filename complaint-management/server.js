@@ -18,8 +18,19 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log(err));
+  .then(() => {
+    console.log("Connected to MongoDB");
+
+    //we set up admin credentials
+    userModel.findOne({ name: "admin" }).then((admin) => {
+      if (!admin) {
+        userModel.create({ name: "admin", email:"admin@test.com", password: "admin123" })
+          .then(() => console.log("Admin user created"))
+          .catch((err) => console.error("Error creating admin user:", err));
+      }
+    });
+  })
+  .catch((err) => console.error(err));
 
 app.post('/login', (req, res) => {
   const { name, password } = req.body;
