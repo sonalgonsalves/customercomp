@@ -64,7 +64,7 @@ function UserRegistration() {
                 .then(result => {
                     console.log(result);
                     alert('User registration successfull!')
-                    navigate('/user');
+                    navigate('/');
                 })
                 .catch(err => console.log(err));
         }
