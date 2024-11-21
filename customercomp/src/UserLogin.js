@@ -4,29 +4,15 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function UserLogin() {
-
     const navigate = useNavigate();
-    const [name, setName] = useState()
-    const [password, setPassword] = useState()
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
 
     const [errors, setErrors] = useState({ name: "", password: "" });
 
     const handleLogin = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:5000/login', { name, password })
-        .then(result => {
-            if (result.data === "Success") {
-                alert("Login successful!");
-                navigate('/complaint');
-            } else {
-                alert("Invalid credentials, please try again.");
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("An error occurred while logging in. Please try again later.");
-        });
-        
+
         // Simple validation logic
         let validationErrors = { name: "", password: "" };
         let isValid = true;
@@ -40,7 +26,32 @@ function UserLogin() {
             isValid = false;
         }
 
-        setErrors(validationErrors);
+        if (!isValid) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        // Admin check
+        if (name === "admin" && password === "admin123") {
+            alert("Admin login successful!");
+            navigate('/dashboard');
+            return;
+        }
+
+        // Other user login logic
+        axios.post('http://localhost:5000/login', { name, password })
+            .then(result => {
+                if (result.data === "Success") {
+                    alert("Login successful!");
+                    navigate('/complaint');
+                } else {
+                    alert("Invalid credentials, please try again.");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("An error occurred while logging in. Please try again later.");
+            });
     };
 
     return (
@@ -92,19 +103,6 @@ function UserLogin() {
                         </Grid>
                     </Grid>
                 </Box>
-
-                {/* Display login message 
-                {loginMessage && (
-                    <Typography
-                        variant="body2"
-                        color={loginMessage === "Login successful!" ? "green" : "error"}
-                        sx={{ mt: 2 }}
-                    >
-                        {loginMessage}
-                    </Typography>
-                )}
-
-                {/* Links for navigation */}
                 <Box sx={{ mt: 2, textAlign: 'center' }}>
                     <Link href="/resetpassword" underline="hover" sx={{ display: 'block', mt: 1 }}>
                         Reset the Password?
@@ -112,7 +110,6 @@ function UserLogin() {
                     <Link href="/register" underline="hover" sx={{ display: 'block', mt: 1 }}>
                         Register
                     </Link>
-                    
                 </Box>
             </Box>
         </Container>
