@@ -104,11 +104,8 @@ function UserLogin() {
                     </Grid>
                 </Box>
                 <Box sx={{ mt: 2, textAlign: 'center' }}>
-                    <Link href="/resetpassword" underline="hover" sx={{ display: 'block', mt: 1 }}>
-                        Reset the Password?
-                    </Link>
                     <Link href="/register" underline="hover" sx={{ display: 'block', mt: 1 }}>
-                        Register
+                        New user? Register
                     </Link>
                 </Box>
             </Box>

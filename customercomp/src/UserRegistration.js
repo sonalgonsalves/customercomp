@@ -140,8 +140,8 @@ function UserRegistration() {
                 </Box>
                 {/* Links for navigation */}
                 <Box sx={{ mt: 2, textAlign: 'center' }}>
-                    <Link href="/user" underline="hover" sx={{ display: 'block', mt: 1 }}>
-                        Login
+                    <Link href="/" underline="hover" sx={{ display: 'block', mt: 1 }}>
+                        Already a user? Login
                     </Link>
                 </Box>
             </Box>
